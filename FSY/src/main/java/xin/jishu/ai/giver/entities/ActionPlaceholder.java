@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ActionPlaceholder {
 
+    private Void z;
+
     public String replace(String source) {
         return source;
     }

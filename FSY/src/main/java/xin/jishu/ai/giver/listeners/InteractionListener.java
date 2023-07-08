@@ -10,9 +10,9 @@ import xin.jishu.ai.giver.EntryPoint;
 import xin.jishu.ai.giver.entities.Action;
 import xin.jishu.ai.giver.services.ActionService;
 
-import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.SimpleBindings;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -132,7 +132,7 @@ public class InteractionListener implements Listener {
         }
     }
 
-    public void flow(Short type, JSONObject payload) throws Exception {
+    public void flow(Short type, Map<String, Object> payload) throws Exception {
         switch (type) {
             case 1: {
                 // Message
@@ -147,7 +147,9 @@ public class InteractionListener implements Listener {
                 for (Map<?, ?> mapping : mappings) {
                     // 动态匹配条件
                     String condition = (String) mapping.get("condition");
-                    Boolean matched = (Boolean) this.executor.eval(condition, (Bindings) payload);
+                    Boolean matched = (Boolean) this.executor.eval(
+                            condition, new SimpleBindings(payload)
+                    );
 
                     if (matched) {
                         // 如果条件匹配, 则执行相应的动作

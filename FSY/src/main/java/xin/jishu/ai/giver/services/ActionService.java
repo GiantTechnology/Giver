@@ -15,7 +15,7 @@ public class ActionService extends BaseService {
     }
 
     public void execute(List<Action> actions) {
-
+        System.out.println(actions);
     }
 
     public static ActionService getInstance() {

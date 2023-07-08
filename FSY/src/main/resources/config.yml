@@ -9,7 +9,7 @@ entities:
       actions:
         - action: spawn
           arguments: [ ]
-    - condition: 'GiftName === "玫瑰" && GiftCount = 1'
+    - condition: 'GiftName === "玫瑰" && GiftCount === 1'
       actions:
         - action: spawn
           arguments:
@@ -44,4 +44,4 @@ entities:
 listeners:
   interaction:
     # 解码器地址
-    fqdn: ws://127.0.0.1:8827
+    fqdn: ws://127.0.0.1:8888

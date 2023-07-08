@@ -1,10 +1,11 @@
 package xin.jishu.ai.giver.commands;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import org.bukkit.command.CommandSender;
 import xin.jishu.ai.giver.listeners.InteractionListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author sxsx欧克 <wo@jishu.xin>
@@ -22,10 +23,14 @@ public class GiftCommand extends AbstractCommand {
 
     @Subcommand("gift emit")
     @CommandCompletion("-")
-    public void onGiftEmit(CommandSender sender, String type) {
+    public void onGiftEmit(CommandSender sender, String type) throws Exception {
+        //
+        Map<String, Object> payload = new HashMap<>();
+
+        payload.put("GiftName", type);
         //
         InteractionListener.getInstance()
-                .flow(5, null);
+                .flow((short) 5, payload);
         //
         sender.sendMessage(type);
     }

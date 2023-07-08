@@ -16,7 +16,7 @@ import xin.jishu.ai.giver.listeners.MessageListener;
 public final class EntryPoint extends JavaPlugin {
 
     private static EntryPoint instance = null;
-    public static final String WAY = "giver:3e742e95-0931-4fbe-961e-434f47283f15";
+    public static final String WAY = "giver:3e742e9509314f";
 
     @Override
     public void onLoad() {

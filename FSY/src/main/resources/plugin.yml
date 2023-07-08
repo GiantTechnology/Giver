@@ -1,4 +1,4 @@
-name: EntryPoint
+name: Giver
 version: '${version}'
 main: xin.jishu.ai.giver.EntryPoint
 api-version: '1.20'
