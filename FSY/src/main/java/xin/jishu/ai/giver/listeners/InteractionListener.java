@@ -52,10 +52,10 @@ public class InteractionListener implements Listener {
                             .getLogger()
                             .log(
                                     Level.INFO,
-                                    "Successfully connected to %s:%s.",
-                                    new Object[]{
+                                    String.format(
+                                            "Successfully connected to %s:%s.",
                                             this.getURI().getHost(), this.getURI().getPort()
-                                    }
+                                    )
                             );
                     // 重置计数器
                     this.retry = 0;
@@ -83,11 +83,10 @@ public class InteractionListener implements Listener {
                             .getLogger()
                             .log(
                                     Level.WARNING,
-                                    "Due to %s, the connection was disconnected by the %s.",
-                                    new Object[]{
-                                            reason,
-                                            remote ? "server" : "client"
-                                    }
+                                    String.format(
+                                            "Due to %s, the connection was disconnected by the %s.",
+                                            reason, remote ? "server" : "client"
+                                    )
                             );
                     // 重新打开连接
                     this.reconnect();
