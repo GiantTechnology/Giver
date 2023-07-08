@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+}
+
+group = 'xin.jishu.ai'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "aikar"
+        url = "https://repo.aikar.co/content/groups/aikar/"
+    }
+    maven {
+        name = "spigotmc-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+}
+
+dependencies {
+    implementation 'org.projectlombok:lombok:1.18.26'
+    implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    implementation 'org.openjdk.nashorn:nashorn-core:15.4'
+    implementation 'com.alibaba.fastjson2:fastjson2:2.0.34'
+    implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+    compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

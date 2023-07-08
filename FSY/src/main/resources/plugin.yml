@@ -1,0 +1,5 @@
+name: EntryPoint
+version: '${version}'
+main: xin.jishu.ai.giver.EntryPoint
+api-version: '1.20'
+authors: [sxsx欧克]
