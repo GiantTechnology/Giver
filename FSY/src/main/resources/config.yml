@@ -2,45 +2,70 @@ entities:
   environment:
     # 房间号
     room: 10000
-    # 难度 | 1 ~ 100
-    difficulty: 1
+    # 倍率
+    multiply: 1
+    # 难度 | -∞ ~ +∞
+    difficulty: 1.0
   gift:
     - condition: 'GiftName === "玫瑰" && GiftCount >= 2'
       actions:
         - action: spawn
-          arguments: [ ]
+          arguments:
+            amount: 1
+            type: entity
+            subtype: CREEPER
+            name: ${giver} 的怪物
     - condition: 'GiftName === "玫瑰" && GiftCount === 1'
       actions:
         - action: spawn
           arguments:
             amount: 1
             type: entity
-            subType: creeper
-            name: ${giverName} 的怪物
+            subtype: CREEPER
+            name: ${giver} 的怪物
         - action: spawn
           arguments:
-            amount: 1
+            amount: 6
             type: practice
-            subType: creeper
+            subtype: EXPLOSION_HUGE
         - action: delay
-          arguments: [ ]
+          arguments:
+            # 毫秒
+            period: 2048
+        - action: spawn
+          arguments:
+            amount: 3
+            type: entity
+            subtype: PRIMED_TNT
         - action: notify
-          arguments: [ ]
+          arguments:
+            # Tick
+            stay: 70
+            fadeIn: 10
+            fadeOut: 20
+            type: title
+            title: '§eA title'
+            subtitle: '§aA subtitle.'
         - action: play
           arguments:
             type: effect
-            subType: ''
+            subtype: DRAGON_BREATH
         - action: play
           arguments:
             type: sound
-            subType: ''
+            subtype: AMBIENT_CAVE
+            pitch: 100.0
+            volume: 100.0
         - action: play
           arguments:
-            type: note
-            subType: ''
+            type: music
+            subtype: ''
         - action: execute
           arguments:
-            content: 'nuke'
+            content: 'weather clear'
+        - action: execute
+          arguments:
+            content: 'time set 0'
 listeners:
   interaction:
     # 解码器地址

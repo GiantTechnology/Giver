@@ -38,26 +38,28 @@ public final class EntryPoint extends JavaPlugin {
     private void initialize() {
         // 保存默认配置文件
         this.saveDefaultConfig();
-        //
-        InteractionListener.getInstance()
-                .getConnector()
-                .connect();
-        //
+        // 注册消息管道
         Bukkit.getMessenger()
                 .registerIncomingPluginChannel(this, EntryPoint.WAY, MessageListener.getInstance());
 
         Bukkit.getMessenger()
                 .registerOutgoingPluginChannel(this, EntryPoint.WAY);
-        //
+        // 注册消息监听器
 //        this.getServer()
 //                .getPluginManager()
 //                .registerEvents(MessageListener.getInstance(), this);
         // 注册指令
         BukkitCommandManager operator = new BukkitCommandManager(this);
 
+        operator.enableUnstableAPI("help");
+
         operator.registerCommand(GiftCommand.getInstance());
         operator.registerCommand(PrimaryCommand.getInstance());
         operator.registerCommand(ConfigurationCommand.getInstance());
+        //
+        InteractionListener.getInstance()
+                .getConnector()
+                .connect();
     }
 
     public static EntryPoint getInstance() {

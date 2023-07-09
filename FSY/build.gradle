@@ -23,16 +23,18 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jooq:joor:0.9.14'
     implementation 'org.projectlombok:lombok:1.18.26'
     implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
     implementation 'org.openjdk.nashorn:nashorn-core:15.4'
     implementation 'com.alibaba.fastjson2:fastjson2:2.0.34'
     implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
 }
 
-def targetJavaVersion = 8
+def targetJavaVersion = 11
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

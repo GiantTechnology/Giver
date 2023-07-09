@@ -1,6 +1,8 @@
 package xin.jishu.ai.giver.services;
 
-import xin.jishu.ai.giver.entities.Action;
+import org.bukkit.scheduler.BukkitRunnable;
+import xin.jishu.ai.giver.EntryPoint;
+import xin.jishu.ai.giver.sundries.actions.BaseAction;
 
 import java.util.List;
 
@@ -14,8 +16,15 @@ public class ActionService extends BaseService {
     private ActionService() {
     }
 
-    public void execute(List<Action> actions) {
-        System.out.println(actions);
+    public void execute(List<? extends BaseAction> actions) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (BaseAction action : actions) {
+                    action.run();
+                }
+            }
+        }.runTaskAsynchronously(EntryPoint.getInstance());
     }
 
     public static ActionService getInstance() {

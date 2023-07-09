@@ -1,5 +1,6 @@
 name: Giver
-version: '${version}'
-main: xin.jishu.ai.giver.EntryPoint
-api-version: '1.20'
 authors: [sxsx欧克]
+api-version: '1.12.2'
+version: '${version}'
+website: https://www.jishu.xin
+main: xin.jishu.ai.giver.EntryPoint

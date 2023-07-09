@@ -6,12 +6,12 @@ import org.bukkit.event.Listener;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
+import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import xin.jishu.ai.giver.EntryPoint;
-import xin.jishu.ai.giver.entities.Action;
 import xin.jishu.ai.giver.services.ActionService;
+import xin.jishu.ai.giver.sundries.actions.BaseAction;
 
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.SimpleBindings;
 import java.net.URI;
 import java.util.List;
@@ -33,9 +33,9 @@ public class InteractionListener implements Listener {
 
     private InteractionListener() {
         //
-        ScriptEngineManager engineManager = new ScriptEngineManager();
+        NashornScriptEngineFactory engineFactory = new NashornScriptEngineFactory();
 
-        this.executor = engineManager.getEngineByName("nashorn");
+        this.executor = engineFactory.getScriptEngine();
         //
         try {
             String fqdn = EntryPoint.getInstance()
@@ -152,9 +152,9 @@ public class InteractionListener implements Listener {
 
                     if (matched) {
                         // 如果条件匹配, 则执行相应的动作
-                        List<Action> actions = ((List<?>) mapping.get("actions"))
+                        List<? extends BaseAction> actions = ((List<?>) mapping.get("actions"))
                                 .stream()
-                                .map(Action::from)
+                                .map(x -> BaseAction.from(x, payload))
                                 .collect(Collectors.toList());
 
                         ActionService.getInstance()
