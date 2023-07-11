@@ -59,13 +59,56 @@ entities:
         - action: play
           arguments:
             type: music
-            subtype: ''
+            subtype: 'F:\resources\backgroundMusic.mp3'
         - action: execute
           arguments:
             content: 'weather clear'
         - action: execute
           arguments:
             content: 'time set 0'
+        - action: input
+          arguments:
+            type: keyPress
+            subtype: VK_W
+        - action: delay
+          arguments:
+            period: 2048
+        - action: input
+          arguments:
+            type: keyPress
+            subtype: VK_E
+        - action: input
+          arguments:
+            type: keyRelease
+            subtype: VK_W
+        - action: delay
+          arguments:
+            period: 2048
+        - action: input
+          arguments:
+            type: keyRelease
+            subtype: VK_E
+        - action: input
+          arguments:
+            type: mousePress
+            subtype: BUTTON1_DOWN_MASK
+        - action: delay
+          arguments:
+            period: 2048
+        - action: input
+          arguments:
+            type: mouseRelease
+            subtype: BUTTON1_DOWN_MASK
+        - action: input
+          arguments:
+            type: mouseMove
+            # 移动到具体坐标点 | [x, y]
+            offset: [1024, 2048]
+        - action: input
+          arguments:
+            type: mouseMove
+            # 根据当前鼠标位置偏移 | [x + 1024, y + 0]
+            offset: [+1024, +0]
 listeners:
   interaction:
     # 解码器地址

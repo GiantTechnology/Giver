@@ -6,6 +6,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
@@ -21,6 +22,7 @@ public class EntryPoint {
     private Robot controller = null;
     private SimpleChannel way = null;
     private final Gson transformer = new Gson();
+    public static final String WAY_VERSION = Integer.toString(1);
 
     /**
      * Directly reference a slf4j logger
@@ -47,27 +49,42 @@ public class EntryPoint {
      */
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        this.way = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation("giver", "first_networking"),
-                String::new, Objects::nonNull, Objects::nonNull
-        );
+        this.way = NetworkRegistry.ChannelBuilder
+                .named(
+                        new ResourceLocation("giver", "3e742e9509314f")
+                )
+                .networkProtocolVersion(() -> EntryPoint.WAY_VERSION)
+                .clientAcceptedVersions(EntryPoint.WAY_VERSION::equalsIgnoreCase)
+                .serverAcceptedVersions(EntryPoint.WAY_VERSION::equalsIgnoreCase)
+                .simpleChannel();
 
         this.way.messageBuilder(
-                        HashMap.class,
-                        ThreadLocalRandom.current()
-                                .nextInt()
+                        HashMap.class, 0
                 )
-                .encoder((x, y) -> y.writeBytes(this.transformer.toJson(x).getBytes()))
-                .decoder((y) -> this.transformer.fromJson(y.readBytes(Short.MAX_VALUE).toString(), HashMap.class))
-                .consumer((payload, context) -> {
-                    context.get().enqueueWork(() -> {
+                .encoder((source, target) ->
+                        target.writeBytes(
+                                this.transformer.toJson(source)
+                                        .getBytes()
+                        )
+                )
+                .decoder(
+                        (source) ->
+                                this.transformer.fromJson(
+                                        source.readBytes(Short.MAX_VALUE)
+                                                .toString(),
+                                        HashMap.class
+                                )
+                )
+                .consumer((payload, source) -> {
+                    NetworkEvent.Context context = source.get();
+
+                    context.enqueueWork(() -> {
                         System.out.println(payload);
                         // EntryPoint.LOGGER.info(payload);
                         // LOGGER.info(String.valueOf(payload));
                     });
 
-                    context.get()
-                            .setPacketHandled(true);
+                    context.setPacketHandled(true);
                 })
                 .add();
     }

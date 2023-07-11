@@ -40,7 +40,9 @@ public final class EntryPoint extends JavaPlugin {
         this.saveDefaultConfig();
         // 注册消息管道
         Bukkit.getMessenger()
-                .registerIncomingPluginChannel(this, EntryPoint.WAY, MessageListener.getInstance());
+                .registerIncomingPluginChannel(
+                        this, EntryPoint.WAY, MessageListener.getInstance()
+                );
 
         Bukkit.getMessenger()
                 .registerOutgoingPluginChannel(this, EntryPoint.WAY);

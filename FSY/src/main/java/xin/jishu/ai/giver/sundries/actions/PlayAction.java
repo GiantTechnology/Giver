@@ -49,7 +49,11 @@ public class PlayAction extends BaseAction {
                         break;
                     }
                     case "music": {
-
+                        // 直接将消息转发给客户端
+                        new InputAction(
+                                this.getSource(), this.getContext()
+                        ).run();
+                        //
                         break;
                     }
                     case "note": {
