@@ -22,7 +22,7 @@ public class GiftCommand extends AbstractCommand {
     }
 
     @Subcommand("gift emit")
-    @CommandCompletion("-")
+    @CommandCompletion("玫瑰 1")
     public void onGiftEmit(CommandSender sender, String name, Integer count) throws Exception {
         //
         Map<String, Object> payload = new HashMap<>();
