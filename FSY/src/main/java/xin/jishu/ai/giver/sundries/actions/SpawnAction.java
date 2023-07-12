@@ -37,7 +37,7 @@ public class SpawnAction extends BaseAction {
             } else {
                 int amount = EntryPoint.getInstance()
                         .getConfig()
-                        .getInt("entities.environment.multiply");
+                        .getInt("entities.environment.magnification");
                 amount *= this.getArgument("amount", Integer.class);
 
                 for (Player player : players) {
@@ -63,7 +63,9 @@ public class SpawnAction extends BaseAction {
                                 if (name != null) {
                                     who.setCustomName(
                                             name.replace(
-                                                    "${giver}", "Xin"
+                                                    "${giver}",
+                                                    (String) this.getArgument("User", Map.class)
+                                                            .get("Nickname")
                                             )
                                     );
                                 }

@@ -1,0 +1,136 @@
+[
+  {
+    "GiftId": 2001,
+    "GiftName": "玫瑰",
+    "GroupId": 1688816873,
+    "GiftCount": 1,
+    "RepeatCount": 1,
+    "DiamondCount": 1,
+    "MsgId": 7253413177965565000,
+    "User": {
+      "FollowingCount": 57,
+      "Id": 1508137018854103,
+      "ShortId": 3475134352,
+      "DisplayId": "dyn8nm5tdbbu",
+      "Nickname": "⑧五貮Ⅶ",
+      "Level": 0,
+      "PayLevel": 6,
+      "Gender": 0,
+      "HeadImgUrl": "https://p6.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813_844dbe7f15e845f4bfbf9d4668284ae8.jpeg?from=3067671334",
+      "SecUid": "MS4wLjABAAAAzpcdyDvoxeGbtnLZZFWhchrwWYDXwR0AUZyXMgJOcISzj8ZE1wFhmSu1MO204S1t",
+      "FansClub": {
+        "ClubName": "兄弟们",
+        "Level": 3
+      },
+      "FollowerCount": 30,
+      "FollowStatus": 0
+    },
+    "Content": "⑧五貮Ⅶ 送出 玫瑰 x 1 个，增量1个",
+    "RoomId": 7253399720918371000
+  },
+  {
+    "MsgId": 7253413215168697000,
+    "User": {
+      "FollowingCount": 26,
+      "Id": 67310969883,
+      "ShortId": 64554739,
+      "DisplayId": "64554739",
+      "Nickname": "玲儿",
+      "Level": 1,
+      "PayLevel": 20,
+      "Gender": 2,
+      "HeadImgUrl": "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_ded0fd9192e24ce629ca97557024e7d0.jpeg?from=3067671334",
+      "SecUid": "MS4wLjABAAAAsw_Yzb5-e0AbWgCVc2BRqD4YVhP7xNTZjz-dCR3Xdss",
+      "FansClub": {
+        "ClubName": "兄弟们",
+        "Level": 7
+      },
+      "FollowerCount": 52,
+      "FollowStatus": 1
+    },
+    "Content": "非静止画面",
+    "RoomId": 7253399720918371000
+  },
+  {
+    "Count": 9,
+    "Total": 2069678,
+    "MsgId": 7254723198108601128,
+    "User": {
+      "FollowingCount": 3,
+      "Id": 1121132490275790,
+      "ShortId": 45075686064,
+      "DisplayId": "45075686064",
+      "Nickname": "淡然〃",
+      "Level": 0,
+      "PayLevel": 25,
+      "Gender": 0,
+      "HeadImgUrl": "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_b6fc0585aee64651b99a11546bc6efeb.jpeg?from=3067671334",
+      "SecUid": "MS4wLjABAAAAYMlgTf2deO15aftT5akjR-UCSTgeipByunnA4U57yAcT2HI97sieo3lkCZPAO9LZ",
+      "FansClub": {
+        "ClubName": "憨豆解",
+        "Level": 6
+      },
+      "FollowerCount": 0,
+      "FollowStatus": 1
+    },
+    "Content": "淡然〃 为主播点了9个赞，总点赞2069678",
+    "RoomId": 7253328255242029883
+  },
+  {
+    "CurrentCount": 17730,
+    "MsgId": 7254723189254589188,
+    "User": {
+      "FollowingCount": 294,
+      "Id": 3575267939858990,
+      "ShortId": 2305764136,
+      "DisplayId": "fan5221321988082",
+      "Nickname": "樊春波",
+      "Level": 0,
+      "PayLevel": 32,
+      "Gender": 1,
+      "HeadImgUrl": "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_f478fc357b5246d38b16467d17459526.jpeg?from=3067671334",
+      "SecUid": "MS4wLjABAAAA5zzKTEHFgjSyAFojZkjwbmMY5TbVyUuf1YopCgnUL7VHzGsi58L9tJwpCnbdi-6m",
+      "FansClub": {
+        "ClubName": "",
+        "Level": 0
+      },
+      "FollowerCount": 1453,
+      "FollowStatus": 0
+    },
+    "Content": "樊春波 来了 直播间人数:17730",
+    "RoomId": 7253328255242029883
+  },
+  {
+    "MsgId": 7254723245149293347,
+    "User": {
+      "FollowingCount": 46,
+      "Id": 2252280736526414,
+      "ShortId": 57689171663,
+      "DisplayId": "zb58965557",
+      "Nickname": "马犬十一",
+      "Level": 0,
+      "PayLevel": 2,
+      "Gender": 1,
+      "HeadImgUrl": "https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_a60dab9ba8bc41519efc087546857a0a.jpeg?from=3067671334",
+      "SecUid": "MS4wLjABAAAAmCqLGliV10pmCFOKuZRv_QxKMw9igohRbXjjoojmQV2TUhf2cY8KmgHifXmavNMP",
+      "FansClub": {
+        "ClubName": "",
+        "Level": 0
+      },
+      "FollowerCount": 50,
+      "FollowStatus": 1
+    },
+    "Content": "马犬十一 关注了主播",
+    "RoomId": 7253328255242029883
+  },
+  {
+    "OnlineUserCount": 17597,
+    "TotalUserCount": 28628344,
+    "TotalUserCountStr": "2862.8万",
+    "OnlineUserCountStr": "1.8万",
+    "MsgId": 7254723223010445876,
+    "User": null,
+    "Content": "当前直播间人数 1.8万，累计直播间人数 2862.8万",
+    "RoomId": 7253328255242029883
+  }
+]

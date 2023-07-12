@@ -1,9 +1,9 @@
 entities:
   environment:
     # 房间号
-    room: 10000
+    room: 7253399720918371000
     # 倍率
-    multiply: 1
+    magnification: 1
     # 难度 | -∞ ~ +∞
     difficulty: 1.0
   gift:
@@ -19,6 +19,14 @@ entities:
           arguments:
             type: mouseMove
             offset: ['+1024', 0]
+    - condition: 'GiftName === "热气球"'
+      actions:
+        - action: execute
+          arguments:
+            # 会从 content 中选择随机指令执行
+            content:
+              - time set day
+              - time set night
     - condition: 'GiftName === "玫瑰" && GiftCount === 1'
       actions:
         - action: spawn
@@ -66,10 +74,13 @@ entities:
             subtype: 'F:\resources\backgroundMusic.mp3'
         - action: execute
           arguments:
-            content: 'weather clear'
+            # 如果只有一条命令, 则该命令必然执行
+            content:
+              - weather clear
         - action: execute
           arguments:
-            content: 'time set 0'
+            content:
+              - time set 0
         - action: input
           arguments:
             type: keyPress
@@ -117,3 +128,31 @@ listeners:
   interaction:
     # 解码器地址
     fqdn: ws://127.0.0.1:8888
+    # 事件
+    on:
+      chat:
+        - condition: 'Content === "非静止画面"'
+          execute:
+            - kill @a
+      follow:
+        - condition: 'true'
+          execute:
+            - kill @a
+      like:
+        - condition: 'Count >= 99 || Total > 409600'
+          execute:
+            - kill @a
+      share:
+        - condition: 'true'
+          execute:
+            - kill @a
+      enter:
+        - condition: 'CurrentCount > 20480'
+          execute:
+            - kill @a
+      broadcast:
+        - condition: 'OnlineUserCount > 10240 && TotalUserCount > 20480000'
+          execute:
+            - kill @a
+
+

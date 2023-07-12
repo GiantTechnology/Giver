@@ -22,13 +22,16 @@ public class GiftCommand extends AbstractCommand {
     }
 
     @Subcommand("gift emit")
-    @CommandCompletion("玫瑰 1")
-    public void onGiftEmit(CommandSender sender, String name, Integer count) throws Exception {
+    @CommandCompletion("玫瑰 1 sxsx欧克")
+    public void onGiftEmit(CommandSender sender, String name, Integer count, String giver) throws Exception {
         //
         Map<String, Object> payload = new HashMap<>();
+        Map<String, Object> subPayload = new HashMap<>();
 
         payload.put("GiftName", name);
         payload.put("GiftCount", count);
+        payload.put("User", subPayload);
+        subPayload.put("Nickname", giver);
         //
         InteractionListener.getInstance()
                 .flow((short) 5, payload);

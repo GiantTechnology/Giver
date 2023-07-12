@@ -10,10 +10,12 @@ import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import xin.jishu.ai.giver.EntryPoint;
 import xin.jishu.ai.giver.services.ActionService;
 import xin.jishu.ai.giver.sundries.actions.BaseAction;
+import xin.jishu.ai.giver.sundries.actions.ExecuteAction;
 
 import javax.script.ScriptEngine;
 import javax.script.SimpleBindings;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -132,25 +134,34 @@ public class InteractionListener implements Listener {
     }
 
     public void flow(Short type, Map<String, Object> payload) throws Exception {
-        switch (type) {
-            case 1: {
-                // Message
-                break;
-            }
-            case 5: {
-                // Gift
-                List<Map<?, ?>> mappings = EntryPoint.getInstance()
-                        .getConfig()
-                        .getMapList("entities.gift");
+        Long roomId = (Long) payload.get("RoomId");
+        long exceptRoomId = EntryPoint.getInstance()
+                .getConfig()
+                .getLong("entities.environment.room");
 
-                for (Map<?, ?> mapping : mappings) {
-                    // 动态匹配条件
-                    String condition = (String) mapping.get("condition");
-                    Boolean matched = (Boolean) this.executor.eval(
-                            condition, new SimpleBindings(payload)
-                    );
+        if (roomId == null || roomId == exceptRoomId) {
+            switch (type) {
+                // Chat
+                case 1 -> this.simpleExecute(
+                        "listeners.interaction.on.chat", payload
+                );
+                // Like
+                case 2 -> this.simpleExecute(
+                        "listeners.interaction.on.like", payload
+                );
+                // Enter
+                case 3 -> this.simpleExecute(
+                        "listeners.interaction.on.follow.enter", payload
+                );
+                // Follow
+                case 4 -> this.simpleExecute(
+                        "listeners.interaction.on.follow.execute", payload
+                );
+                case 5 -> {
+                    // Gift
+                    List<Map<?, ?>> mappings = this.filter("entities.gift", payload);
 
-                    if (matched) {
+                    for (Map<?, ?> mapping : mappings) {
                         // 如果条件匹配, 则执行相应的动作
                         List<? extends BaseAction> actions = ((List<?>) mapping.get("actions"))
                                 .stream()
@@ -163,9 +174,51 @@ public class InteractionListener implements Listener {
                         break;
                     }
                 }
-                //
-                break;
+                // Broadcast
+                case 6 -> this.simpleExecute(
+                        "listeners.interaction.on.broadcast", payload
+                );
             }
+        }
+    }
+
+    private List<Map<?, ?>> filter(String key, Map<String, Object> payload) throws Exception {
+        List<Map<?, ?>> result = new ArrayList<>();
+        List<Map<?, ?>> mappings = EntryPoint.getInstance()
+                .getConfig()
+                .getMapList(key);
+
+        for (Map<?, ?> mapping : mappings) {
+            // 动态匹配条件
+            String condition = (String) mapping.get("condition");
+            Boolean matched = (Boolean) this.executor.eval(
+                    condition, new SimpleBindings(payload)
+            );
+
+            if (matched) {
+                result.add(mapping);
+            }
+        }
+
+        return result;
+    }
+
+    private void simpleExecute(String key, Map<String, Object> payload) throws Exception {
+        List<Map<?, ?>> mappings = this.filter(
+                key, payload
+        );
+
+        for (Map<?, ?> mapping : mappings) {
+            // 如果条件匹配, 则执行相应的动作
+            new ExecuteAction(
+                    Map.of(
+                            "content",
+                            mapping.get("execute")
+                    ),
+                    payload
+            ).run();
+            // 跳出循环
+            break;
         }
     }
 
