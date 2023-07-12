@@ -31,6 +31,7 @@ public class InteractionListener implements Listener {
 
     private ScriptEngine executor = null;
     private WebSocketClient connector = null;
+    private List<Long> followers = new ArrayList<>();
     private static final InteractionListener INSTANCE = new InteractionListener();
 
     private InteractionListener() {
@@ -154,11 +155,21 @@ public class InteractionListener implements Listener {
                         "listeners.interaction.on.follow.enter", payload
                 );
                 // Follow
-                case 4 -> this.simpleExecute(
-                        "listeners.interaction.on.follow.execute", payload
-                );
+                case 4 -> {
+                    Long userId = (Long) ((Map<?, ?>) payload.get("User"))
+                            .get("Id");
+
+                    if (this.followers.contains(userId)) {
+
+                    } else {
+                        this.simpleExecute(
+                                "listeners.interaction.on.follow.execute", payload
+                        );
+                    }
+
+                }
+                // Gift
                 case 5 -> {
-                    // Gift
                     List<Map<?, ?>> mappings = this.filter("entities.gift", payload);
 
                     for (Map<?, ?> mapping : mappings) {
