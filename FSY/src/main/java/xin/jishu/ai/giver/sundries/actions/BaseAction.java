@@ -34,22 +34,14 @@ public abstract class BaseAction implements Runnable {
         return (String) this.source.get("action");
     }
 
-    public Object getArgument(String key) {
-        return this.getArgument(key, Object.class);
-    }
-
     @SuppressWarnings("unchecked")
     public <T> T getArgument(String key, Class<T> type) {
         Object value = this.arguments.get(key);
 
-        if(value == null) {
+        if (value == null) {
             return null;
         } else {
-            if (value.getClass() == type) {
-                return (T) value;
-            } else {
-                return null;
-            }
+            return (T) value;
         }
     }
 

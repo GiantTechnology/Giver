@@ -1,7 +1,7 @@
 entities:
   environment:
     # 房间号
-    room: 7253399720918371000
+    room: 7255644442516933439
     # 倍率
     magnification: 1
     # 难度 | -∞ ~ +∞
