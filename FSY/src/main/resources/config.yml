@@ -1,7 +1,5 @@
 entities:
   environment:
-    # 房间号
-    room: 7255644442516933439
     # 倍率
     magnification: 1
     # 难度 | -∞ ~ +∞
@@ -10,6 +8,10 @@ listeners:
   interaction:
     # 解码器地址
     fqdn: ws://127.0.0.1:8888
+    # 房间号绑定
+    bindings:
+      - room: 7255644442516933439
+        player: iYarnFog
     # 事件
     on:
       - type: gift
@@ -79,7 +81,7 @@ listeners:
           - action: play
             arguments:
               type: music
-              subtype: 'F:\resources\backgroundMusic.mp3'
+              location: 'F:\resources\backgroundMusic.mp3'
           - action: execute
             arguments:
               # 如果只有一条命令, 则该命令必然执行

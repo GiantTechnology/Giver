@@ -17,10 +17,32 @@ const Index: React.FC = () => {
       footer={
         content
           ? [
+              <Button key="tip" type="link">
+                请务必序列化数据后再导出配置文件
+              </Button>,
               <Button key="rest" onClick={() => setContent(undefined)}>
                 重置
               </Button>,
-              <Button key="submit" type="primary">
+              <Button
+                key="submit"
+                type="primary"
+                onClick={() => {
+                  const payload = new Blob([yaml.dump(content)], {
+                    type: "text/yaml",
+                  });
+                  const at = URL.createObjectURL(payload);
+                  const downloader = document.createElement("a");
+                  //
+                  downloader.href = at;
+                  downloader.download = "config.yml";
+                  //
+                  document.body.appendChild(downloader);
+                  downloader.click();
+
+                  document.body.removeChild(downloader);
+                  URL.revokeObjectURL(at);
+                }}
+              >
                 导出配置文件
               </Button>,
             ]
