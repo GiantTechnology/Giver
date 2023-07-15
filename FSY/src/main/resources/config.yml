@@ -6,153 +6,171 @@ entities:
     magnification: 1
     # 难度 | -∞ ~ +∞
     difficulty: 1.0
-  gift:
-    - condition: 'GiftName === "玫瑰" && GiftCount >= 2'
-      actions:
-        - action: spawn
-          arguments:
-            amount: 1
-            type: entity
-            subtype: CREEPER
-            name: ${giver} 的怪物
-        - action: input
-          arguments:
-            type: mouseMove
-            offset: ['+1024', 0]
-    - condition: 'GiftName === "热气球"'
-      actions:
-        - action: execute
-          arguments:
-            # 会从 content 中选择随机指令执行
-            content:
-              - time set day
-              - time set night
-    - condition: 'GiftName === "玫瑰" && GiftCount === 1'
-      actions:
-        - action: spawn
-          arguments:
-            amount: 1
-            type: entity
-            subtype: CREEPER
-            name: ${giver} 的怪物
-        - action: spawn
-          arguments:
-            amount: 6
-            type: practice
-            subtype: EXPLOSION_HUGE
-        - action: delay
-          arguments:
-            # 毫秒
-            period: 2048
-        - action: spawn
-          arguments:
-            amount: 3
-            type: entity
-            subtype: PRIMED_TNT
-        - action: notify
-          arguments:
-            # Tick
-            stay: 70
-            fadeIn: 10
-            fadeOut: 20
-            type: title
-            title: '§eA title'
-            subtitle: '§aA subtitle.'
-        - action: play
-          arguments:
-            type: effect
-            subtype: DRAGON_BREATH
-        - action: play
-          arguments:
-            type: sound
-            subtype: AMBIENT_CAVE
-            pitch: 100.0
-            volume: 100.0
-        - action: play
-          arguments:
-            type: music
-            subtype: 'F:\resources\backgroundMusic.mp3'
-        - action: execute
-          arguments:
-            # 如果只有一条命令, 则该命令必然执行
-            content:
-              - weather clear
-        - action: execute
-          arguments:
-            content:
-              - time set 0
-        - action: input
-          arguments:
-            type: keyPress
-            subtype: VK_W
-        - action: delay
-          arguments:
-            period: 2048
-        - action: input
-          arguments:
-            type: keyPress
-            subtype: VK_E
-        - action: input
-          arguments:
-            type: keyRelease
-            subtype: VK_W
-        - action: delay
-          arguments:
-            period: 2048
-        - action: input
-          arguments:
-            type: keyRelease
-            subtype: VK_E
-        - action: input
-          arguments:
-            type: mousePress
-            subtype: BUTTON1_DOWN_MASK
-        - action: delay
-          arguments:
-            period: 2048
-        - action: input
-          arguments:
-            type: mouseRelease
-            subtype: BUTTON1_DOWN_MASK
-        - action: input
-          arguments:
-            type: mouseMove
-            # 移动到具体坐标点 | [x, y]
-            offset: [1024, 2048]
-        - action: input
-          arguments:
-            type: mouseMove
-            # 根据当前鼠标位置偏移 | [x + 1024, y + 0]
-            offset: ['+1024', '+0']
 listeners:
   interaction:
     # 解码器地址
     fqdn: ws://127.0.0.1:8888
     # 事件
     on:
-      chat:
-        - condition: 'Content === "非静止画面"'
-          execute:
-            - kill @a
-      follow:
-        - condition: 'true'
-          execute:
-            - kill @a
-      like:
-        - condition: 'Count >= 99 || Total > 409600'
-          execute:
-            - kill @a
-      share:
-        - condition: 'true'
-          execute:
-            - kill @a
-      enter:
-        - condition: 'CurrentCount > 20480'
-          execute:
-            - kill @a
-      broadcast:
-        - condition: 'OnlineUserCount > 10240 && TotalUserCount > 20480000'
-          execute:
-            - kill @a
-
-
+      - type: gift
+        condition: 'GiftName === "玫瑰" && GiftCount >= 2'
+        actions:
+          - action: spawn
+            arguments:
+              amount: 1
+              type: entity
+              subtype: CREEPER
+              name: ${giver} 的怪物
+          - action: input
+            arguments:
+              type: mouseMove
+              offset: [ '+1024', 0 ]
+      - type: gift
+        condition: 'GiftName === "热气球"'
+        actions:
+          - action: execute
+            arguments:
+              # 会从 content 中选择随机指令执行
+              content:
+                - time set day
+                - time set night
+      - type: gift
+        condition: 'GiftName === "玫瑰" && GiftCount === 1'
+        actions:
+          - action: spawn
+            arguments:
+              amount: 1
+              type: entity
+              subtype: CREEPER
+              name: ${giver} 的怪物
+          - action: spawn
+            arguments:
+              amount: 6
+              type: practice
+              subtype: EXPLOSION_HUGE
+          - action: delay
+            arguments:
+              # 毫秒
+              period: 2048
+          - action: spawn
+            arguments:
+              amount: 3
+              type: entity
+              subtype: PRIMED_TNT
+          - action: notify
+            arguments:
+              # Tick
+              stay: 70
+              fadeIn: 10
+              fadeOut: 20
+              type: title
+              title: '§eA title'
+              subtitle: '§aA subtitle.'
+          - action: play
+            arguments:
+              type: effect
+              subtype: DRAGON_BREATH
+          - action: play
+            arguments:
+              type: sound
+              subtype: AMBIENT_CAVE
+              pitch: 100.0
+              volume: 100.0
+          - action: play
+            arguments:
+              type: music
+              subtype: 'F:\resources\backgroundMusic.mp3'
+          - action: execute
+            arguments:
+              # 如果只有一条命令, 则该命令必然执行
+              content:
+                - weather clear
+          - action: execute
+            arguments:
+              content:
+                - time set 0
+          - action: input
+            arguments:
+              type: keyPress
+              subtype: VK_W
+          - action: delay
+            arguments:
+              period: 2048
+          - action: input
+            arguments:
+              type: keyPress
+              subtype: VK_E
+          - action: input
+            arguments:
+              type: keyRelease
+              subtype: VK_W
+          - action: delay
+            arguments:
+              period: 2048
+          - action: input
+            arguments:
+              type: keyRelease
+              subtype: VK_E
+          - action: input
+            arguments:
+              type: mousePress
+              subtype: BUTTON1_DOWN_MASK
+          - action: delay
+            arguments:
+              period: 2048
+          - action: input
+            arguments:
+              type: mouseRelease
+              subtype: BUTTON1_DOWN_MASK
+          - action: input
+            arguments:
+              type: mouseMove
+              # 移动到具体坐标点 | [x, y]
+              offset: [ 1024, 2048 ]
+          - action: input
+            arguments:
+              type: mouseMove
+              # 根据当前鼠标位置偏移 | [x + 1024, y + 0]
+              offset: [ '+1024', '+0' ]
+      - type: chat
+        condition: 'Content === "非静止画面"'
+        actions:
+          - action: execute
+            arguments:
+              content:
+                - kill @a
+      - type: follow
+        condition: 'true'
+        actions:
+          - action: execute
+            arguments:
+              content:
+                - kill @a
+      - type: like
+        condition: 'Count >= 99 || Total > 409600'
+        actions:
+          - action: execute
+            arguments:
+              content:
+                - kill @a
+      - type: share
+        condition: 'true'
+        actions:
+          - action: execute
+            arguments:
+              content:
+                - kill @a
+      - type: enter
+        condition: 'CurrentCount > 20480'
+        actions:
+          - action: execute
+            arguments:
+              content:
+                - kill @a
+      - type: broadcast
+        condition: 'OnlineUserCount > 10240 && TotalUserCount > 20480000'
+        actions:
+          - action: execute
+            arguments:
+              content:
+                - kill @a

@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "author": "sxsx欧克 <wo@jishu.xin>",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.1.4",
+    "@ant-design/pro-components": "^2.6.5",
+    "ahooks": "^3.7.8",
+    "antd": "^5.7.0",
+    "js-yaml": "^4.1.0",
+    "umi": "^4.0.72"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "typescript": "^5.1.6"
+  }
+}
