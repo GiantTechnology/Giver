@@ -46,7 +46,7 @@ listeners:
           - action: spawn
             arguments:
               amount: 6
-              type: practice
+              type: particle
               subtype: EXPLOSION_HUGE
           - action: delay
             arguments:

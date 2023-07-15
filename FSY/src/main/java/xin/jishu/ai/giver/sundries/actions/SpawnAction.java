@@ -94,7 +94,7 @@ public class SpawnAction extends BaseAction {
                             //
                             break;
                         }
-                        case "practice": {
+                        case "particle": {
                             player.getWorld()
                                     .spawnParticle(
                                             Particle.valueOf(
