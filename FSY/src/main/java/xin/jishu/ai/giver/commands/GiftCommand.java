@@ -1,9 +1,11 @@
 package xin.jishu.ai.giver.commands;
 
 import co.aikar.commands.annotation.*;
+import com.alibaba.fastjson2.JSON;
 import org.bukkit.command.CommandSender;
 import xin.jishu.ai.giver.listeners.InteractionListener;
 
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,21 +24,19 @@ public class GiftCommand extends AbstractCommand {
     }
 
     @Subcommand("gift emit")
-    @CommandCompletion("玫瑰 1 sxsx欧克")
-    public void onGiftEmit(CommandSender sender, String name, Integer count, String giver) throws Exception {
+    @SuppressWarnings("unchecked")
+    @CommandCompletion("{\"GiftName\":\"玫瑰\",\"GiftCount\":1,\"RepeatCount\":1,\"DiamondCount\":1,\"User\":{\"Nickname\":\"sxsx欧克\",},\"RoomId\":7255644442516933439}")
+    public void onGiftEmit(CommandSender sender, String source) throws Exception {
         //
-        Map<String, Object> payload = new HashMap<>();
-        Map<String, Object> subPayload = new HashMap<>();
+        Map<String, Object> payload = JSON.parseObject(source, Map.class);
 
-        payload.put("GiftName", name);
-        payload.put("GiftCount", count);
-        payload.put("User", subPayload);
-        subPayload.put("Nickname", giver);
-        //
         InteractionListener.getInstance()
                 .flow((short) 5, payload);
         //
-        sender.sendMessage(name);
+        sender.sendMessage(
+                ZonedDateTime.now()
+                        .toString()
+        );
     }
 
 

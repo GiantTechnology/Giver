@@ -175,4 +175,4 @@ listeners:
           - action: execute
             arguments:
               content:
-                - kill @a
+                - kill ${taker}

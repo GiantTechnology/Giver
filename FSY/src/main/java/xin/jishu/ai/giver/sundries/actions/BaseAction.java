@@ -2,6 +2,7 @@ package xin.jishu.ai.giver.sundries.actions;
 
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.entity.Player;
 import org.joor.Reflect;
 import xin.jishu.ai.giver.EntryPoint;
 
@@ -14,12 +15,14 @@ import java.util.logging.Level;
  */
 @Data
 public abstract class BaseAction implements Runnable {
+    private final Player target;
     private final Map<?, ?> source;
     private final Map<?, ?> context;
     private final Map<Object, Object> arguments;
 
-    public BaseAction(Map<?, ?> source, Map<?, ?> context) {
+    public BaseAction(Map<?, ?> source, Map<?, ?> context, Player target) {
         this.source = source;
+        this.target = target;
         this.context = context;
         //
         this.arguments = new HashMap<>();
@@ -45,7 +48,17 @@ public abstract class BaseAction implements Runnable {
         }
     }
 
-    public static BaseAction from(Object x, Object y) {
+    protected String replace(String source) {
+        return source.replace(
+                "${giver}",
+                (String) this.getArgument("User", Map.class)
+                        .get("Nickname")
+        ).replace(
+                "${taker}", this.target.getName()
+        );
+    }
+
+    public static BaseAction from(Object x, Object y, Player target) {
         try {
             Map<?, ?> source = (Map<?, ?>) x;
             Map<?, ?> context = (Map<?, ?>) y;
@@ -60,7 +73,7 @@ public abstract class BaseAction implements Runnable {
             );
             // 实例化 Action
             return Reflect.onClass(name)
-                    .create(source, context)
+                    .create(source, context, target)
                     .get();
         } catch (Exception wrong) {
             EntryPoint.getInstance()

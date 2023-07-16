@@ -1,6 +1,7 @@
 package xin.jishu.ai.giver.sundries.actions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import xin.jishu.ai.giver.EntryPoint;
 
 import java.util.List;
@@ -13,8 +14,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ExecuteAction extends BaseAction {
 
 
-    public ExecuteAction(Map<?, ?> source, Map<?, ?> context) {
-        super(source, context);
+    public ExecuteAction(Map<?, ?> source, Map<?, ?> context, Player target) {
+        super(source, context, target);
     }
 
     @Override
@@ -30,7 +31,9 @@ public class ExecuteAction extends BaseAction {
                     EntryPoint.getInstance()
                             .getServer()
                             .getConsoleSender(),
-                    (String) commands.get(luckier)
+                    this.replace(
+                            (String) commands.get(luckier)
+                    )
             );
         } else {
             Bukkit.getScheduler()

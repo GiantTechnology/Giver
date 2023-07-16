@@ -2,6 +2,7 @@ package xin.jishu.ai.giver.listeners;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.enums.ReadyState;
@@ -10,7 +11,6 @@ import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import xin.jishu.ai.giver.EntryPoint;
 import xin.jishu.ai.giver.services.ActionService;
 import xin.jishu.ai.giver.sundries.actions.BaseAction;
-import xin.jishu.ai.giver.sundries.actions.ExecuteAction;
 
 import javax.script.ScriptEngine;
 import javax.script.SimpleBindings;
@@ -18,6 +18,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -29,9 +30,9 @@ import java.util.stream.Collectors;
  */
 public class InteractionListener implements Listener {
 
-    private ScriptEngine executor = null;
+    private final ScriptEngine executor;
     private WebSocketClient connector = null;
-    private List<Long> followers = new ArrayList<>();
+    private final List<Long> followers = new ArrayList<>();
     private static final InteractionListener INSTANCE = new InteractionListener();
 
     private InteractionListener() {
@@ -136,98 +137,103 @@ public class InteractionListener implements Listener {
 
     public void flow(Short type, Map<String, Object> payload) throws Exception {
         Long roomId = (Long) payload.get("RoomId");
-        long exceptRoomId = EntryPoint.getInstance()
+        List<Map<?, ?>> bindings = EntryPoint.getInstance()
                 .getConfig()
-                .getLong("entities.environment.room");
+                .getMapList("listeners.interaction.bindings");
 
-        if (roomId == null || roomId == exceptRoomId) {
-            switch (type) {
-                // Chat
-                case 1 -> this.simpleExecute(
-                        "listeners.interaction.on.chat", payload
-                );
-                // Like
-                case 2 -> this.simpleExecute(
-                        "listeners.interaction.on.like", payload
-                );
-                // Enter
-                case 3 -> this.simpleExecute(
-                        "listeners.interaction.on.follow.enter", payload
-                );
-                // Follow
-                case 4 -> {
-                    Long userId = (Long) ((Map<?, ?>) payload.get("User"))
-                            .get("Id");
-
-                    if (this.followers.contains(userId)) {
-
-                    } else {
-                        this.simpleExecute(
-                                "listeners.interaction.on.follow.execute", payload
+        for (Map<?, ?> binding : bindings) {
+            if (
+                    Objects.equals(roomId, binding.get("room"))
+            ) {
+                Player target = EntryPoint.getInstance()
+                        .getServer()
+                        .getPlayerExact(
+                                (String) binding.get("player")
                         );
+
+                if (target == null) {
+                    String message = String.format(
+                            "The target player %s is currently offline, therefore the execution failed.",
+                            binding.get("player")
+                    );
+
+                    EntryPoint.getInstance()
+                            .getLogger()
+                            .log(Level.WARNING, message);
+                } else {
+                    // 如果玩家在线, 则根据条件判断执行哪些处理逻辑
+                    switch (type) {
+                        case 1 -> this.simpleExecute("chat", payload, target);
+                        case 2 -> this.simpleExecute("like", payload, target);
+                        case 3 -> this.simpleExecute("enter", payload, target);
+                        case 4 -> {
+                            Long userId = (Long) ((Map<?, ?>) payload.get("User"))
+                                    .get("Id");
+
+                            if (!this.followers.contains(userId)) {
+                                //
+                                this.simpleExecute("follow", payload, target);
+                                //
+                                this.followers.add(userId);
+                            }
+                        }
+                        case 5 -> this.simpleExecute("gift", payload, target);
+                        case 6 -> this.simpleExecute("broadcast", payload, target);
                     }
-
                 }
-                // Gift
-                case 5 -> {
-                    List<Map<?, ?>> mappings = this.filter("entities.gift", payload);
-
-                    for (Map<?, ?> mapping : mappings) {
-                        // 如果条件匹配, 则执行相应的动作
-                        List<? extends BaseAction> actions = ((List<?>) mapping.get("actions"))
-                                .stream()
-                                .map(x -> BaseAction.from(x, payload))
-                                .collect(Collectors.toList());
-
-                        ActionService.getInstance()
-                                .execute(actions);
-                        // 跳出循环
-                        break;
-                    }
-                }
-                // Broadcast
-                case 6 -> this.simpleExecute(
-                        "listeners.interaction.on.broadcast", payload
-                );
+                // 跳出循环
+                break;
             }
         }
     }
 
-    private List<Map<?, ?>> filter(String key, Map<String, Object> payload) throws Exception {
+    private List<Map<?, ?>> filter(String type, Map<String, Object> payload) throws Exception {
         List<Map<?, ?>> result = new ArrayList<>();
         List<Map<?, ?>> mappings = EntryPoint.getInstance()
                 .getConfig()
-                .getMapList(key);
+                .getMapList("listeners.interaction.on");
+
+        if(mappings.size() == 0) {
+            // 修正 SnakeYaml 的一个奇怪的错误
+            mappings = EntryPoint.getInstance()
+                    .getConfig()
+                    .getMapList("listeners.interaction.true");
+        }
 
         for (Map<?, ?> mapping : mappings) {
-            // 动态匹配条件
-            String condition = (String) mapping.get("condition");
-            Boolean matched = (Boolean) this.executor.eval(
-                    condition, new SimpleBindings(payload)
-            );
+            // 判断类型是否匹配
+            if (
+                    Objects.equals(
+                            type, mapping.get("type")
+                    )
+            ) {
+                // 判断动态条件是否匹配
+                String condition = (String) mapping.get("condition");
+                Boolean matched = (Boolean) this.executor.eval(
+                        condition, new SimpleBindings(payload)
+                );
 
-            if (matched) {
-                result.add(mapping);
+                if (matched) {
+                    result.add(mapping);
+                }
             }
         }
 
         return result;
     }
 
-    private void simpleExecute(String key, Map<String, Object> payload) throws Exception {
-        List<Map<?, ?>> mappings = this.filter(
-                key, payload
-        );
+    private void simpleExecute(String type, Map<String, Object> payload, Player target) throws Exception {
+        List<Map<?, ?>> mappings = this.filter(type, payload);
 
         for (Map<?, ?> mapping : mappings) {
             // 如果条件匹配, 则执行相应的动作
-            new ExecuteAction(
-                    Map.of(
-                            "content",
-                            mapping.get("execute")
-                    ),
-                    payload
-            ).run();
+            List<? extends BaseAction> actions = ((List<?>) mapping.get("actions"))
+                    .stream()
+                    .map(x -> BaseAction.from(x, payload, target))
+                    .collect(Collectors.toList());
+
+            ActionService.getInstance()
+                    .execute(actions);
             // 跳出循环
             break;
         }

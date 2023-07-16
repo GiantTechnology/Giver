@@ -1,6 +1,7 @@
 package xin.jishu.ai.giver.sundries.actions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import xin.jishu.ai.giver.EntryPoint;
 
 import java.util.Map;
@@ -12,8 +13,8 @@ import java.util.logging.Level;
 public class DelayAction extends BaseAction {
 
 
-    public DelayAction(Map<?, ?> source, Map<?, ?> context) {
-        super(source, context);
+    public DelayAction(Map<?, ?> source, Map<?, ?> context, Player target) {
+        super(source, context, target);
     }
 
     @Override
