@@ -2,31 +2,22 @@ import {
   ProCard,
   ProCardProps,
   ProForm,
-  ProFormDependency,
   ProFormDigit,
-  ProFormFieldSet,
   ProFormList,
-  ProFormRadio,
-  ProFormSegmented,
   ProFormText,
 } from "@ant-design/pro-components";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, MutableRefObject, SetStateAction } from "react";
 import ListenerEditor from "@/pages/components/ListenerEditor";
 import { SaveOutlined } from "@ant-design/icons";
-import SuperProFormSelect from "@/pages/components/SuperProFormSelect";
-import Holder from "@/pages/components/Holder";
 
 const Editor: React.FC<
   ProCardProps & {
-    context: [
-      Record<string, any> | undefined,
-      Dispatch<SetStateAction<Record<string, any> | undefined>>,
-    ];
+    context: [MutableRefObject<Record<string, any> | undefined>];
   }
 > & {
   isProCard: boolean;
 } = (properties) => {
-  const [content, setContent] = properties.context;
+  const [content] = properties.context;
 
   return (
     <ProCard direction="column" ghost gutter={[6, 6]} {...properties}>
@@ -46,24 +37,37 @@ const Editor: React.FC<
           <ProForm
             submitter={false}
             onChange={(event: any) => {
-              // Todo: 实现 Binding
-              setContent({
-                ...content,
-                listeners: {
-                  ...content?.listeners,
-                  interaction: {
-                    ...content?.listeners?.interaction,
+              //
+              let key = event.target.id;
+              let value = event.target.className.includes(
+                "ant-input-number-input",
+              )
+                ? Number(event.target.value)
+                : event.target.value;
+              //
+              if (event.target.id.startsWith("bindings")) {
+                // 处理从 Input 获取来的原始 Binding 数据
+                const chips = key.split("_");
+                const bindings =
+                  content?.current?.listeners?.interaction?.bindings;
 
-                    [event.target.id]: event.target.className.includes(
-                      "ant-input-number-input",
-                    )
-                      ? Number(event.target.value)
-                      : event.target.value,
-                  },
-                },
-              });
+                if (bindings?.length > chips[1]) {
+                  bindings[chips[1]][chips[2]] = value;
+                } else {
+                  bindings.push({
+                    [chips[2]]: value,
+                  });
+                }
+                // 重设 Event Target Identifier 用于后续处理
+                key = "bindings";
+                value = bindings;
+              }
+              //
+              if (content?.current?.listeners?.interaction) {
+                content.current.listeners.interaction[key] = value;
+              }
             }}
-            initialValues={content?.listeners?.interaction}
+            initialValues={content?.current?.listeners?.interaction}
           >
             <ProFormText name="fqdn" label="地址" />
             <ProFormList
@@ -111,23 +115,14 @@ const Editor: React.FC<
           <ProForm
             submitter={false}
             onChange={(event: any) => {
-              setContent({
-                ...content,
-                entities: {
-                  ...content?.entities,
-                  environment: {
-                    ...content?.entities?.environment,
-
-                    [event.target.id]: event.target.className.includes(
-                      "ant-input-number-input",
-                    )
-                      ? Number(event.target.value)
-                      : event.target.value,
-                  },
-                },
-              });
+              if (content?.current?.entities?.environment) {
+                content.current.entities.environment[event.target.id] =
+                  event.target.className.includes("ant-input-number-input")
+                    ? Number(event.target.value)
+                    : event.target.value;
+              }
             }}
-            initialValues={content?.entities?.environment}
+            initialValues={content?.current?.entities?.environment}
           >
             <ProFormDigit name="difficulty" label="难度" />
             <ProFormDigit name="magnification" label="倍率" />
@@ -193,20 +188,13 @@ const Editor: React.FC<
               }
             }
             // 置入数据
-            setContent({
-              ...content,
-              listeners: {
-                ...content?.listeners,
-                interaction: {
-                  ...content?.listeners?.interaction,
-                  on: formData,
-                },
-              },
-            });
+            if (content?.current?.listeners?.interaction) {
+              content.current.listeners.interaction.on = formData.on;
+            }
             //
             return Promise.resolve(true);
           }}
-          initialValues={content?.listeners?.interaction}
+          initialValues={content?.current?.listeners?.interaction}
         >
           <ListenerEditor name="on" />
         </ProForm>
