@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'xin.jishu.ai'
-version = '1.0-SNAPSHOT'
+version = 'Build20230716.FSY'
 
 repositories {
     mavenCentral()
