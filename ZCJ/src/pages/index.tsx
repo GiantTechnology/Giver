@@ -1,5 +1,5 @@
 import { PageContainer, ProCard } from "@ant-design/pro-components";
-import { Button, Empty, message, Upload } from "antd";
+import { Button, Empty, message, Space, Tag, Upload } from "antd";
 import React, { useRef, useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
 import * as yaml from "js-yaml";
@@ -13,6 +13,20 @@ const Index: React.FC = () => {
     <PageContainer
       title="Giver"
       subTitle="配置文件编辑器"
+      extra={
+        <Space direction="vertical">
+          <Tag
+            color="cyan"
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={() => (window.location.href = "https://jishu.xin")}
+          >
+            @sxsx欧克
+          </Tag>
+          <Tag color="lime">vBuild20230723.ZCJ</Tag>
+        </Space>
+      }
       footer={
         empty
           ? [
@@ -74,7 +88,7 @@ const Index: React.FC = () => {
                 key="submit"
                 type="primary"
                 onClick={() => {
-                  const payload = new Blob([yaml.dump(content)], {
+                  const payload = new Blob([yaml.dump(content.current)], {
                     type: "text/yaml",
                   });
                   const at = URL.createObjectURL(payload);
